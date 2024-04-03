@@ -1,6 +1,7 @@
 # Zoom Email Integration with AstraDB and Email Content Vectorization
 
-This repository contains code that enables the integration of Zoom email functionality with AstraDB, along with the capability to vectorize email content for advanced processing. Zoom is a widely-used video conferencing platform with email features, and AstraDB is a distributed cloud database built on Apache Cassandra™. This integration not only allows for efficient and secure storage of email data from Zoom into AstraDB but also enhances email processing with vectorization.
+
+This repository offers code designed to integrate Zoom Mail Service functionalities with AstraDB, a distributed cloud database built on Apache Cassandra™. Zoom Mail Service provides comprehensive email features including inbox management, outbox, drafts, sent messages, archiving, and more. By integrating Zoom Mail Service with AstraDB, users can securely store and manage email data while also leveraging advanced processing capabilities such as content vectorization for enhanced functionality
 
 ### Purpose
 
