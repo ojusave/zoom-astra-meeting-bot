@@ -1,6 +1,22 @@
 # Zoom Email Integration with AstraDB
 
-This repository contains code for integrating Zoom email functionality with AstraDB, allowing users to fetch and store email data from Zoom into an AstraDB database.
+The code in this repository enables the integration of Zoom email functionality with AstraDB. Zoom is a popular video conferencing platform that also provides email features. AstraDB is a distributed cloud database built on Apache Cassandra™. By integrating Zoom email functionality with AstraDB, users can fetch and store email data from Zoom into an AstraDB database efficiently and securely.
+
+### Purpose
+
+The main purpose of this code is to provide a seamless solution for managing email data from Zoom within an AstraDB database. This integration allows users to leverage the scalability, reliability, and performance benefits of AstraDB while utilizing the email features of Zoom.
+
+## Functionality
+
+The code facilitates the following key functionalities:
+
+- **OAuth Authorization with Zoom**: The code initiates the OAuth flow with Zoom to obtain authorization for accessing email data. It handles the redirection flow, exchanges authorization codes for access tokens, and stores the tokens securely.
+
+- **Email Retrieval from Zoom**: Once authorized, the code fetches email data from Zoom using the obtained access tokens. It interacts with the Zoom API to retrieve email messages and their details.
+
+- **Storage in AstraDB**: The fetched email data is stored in AstraDB collections. The code manages the creation of collections, insertion of email documents, and retrieval of stored emails as needed.
+
+- **API Endpoints**: The code exposes API endpoints to trigger OAuth authorization, fetch emails from Zoom, and retrieve stored emails from AstraDB. These endpoints provide an interface for users or applications to interact with the integration.
 
 ## Installation
 
