@@ -53,9 +53,6 @@ Fetches emails from the Zoom API and stores them in the AstraDB collection.
 
 Contains functions for interacting with AstraDB, including creating collections, inserting documents, and fetching data.
 
-### `.env`
-
-Stores environment variables including Zoom OAuth settings, mailbox details, and AstraDB configuration.
 
 ## Dependencies
 
