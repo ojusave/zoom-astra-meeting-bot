@@ -70,13 +70,12 @@ async function fetchDocumentsFromCollection(collectionName) {
         if (!response.ok) throw new Error(`Failed to fetch documents from collection: ${collectionName}`);
         const data = await response.json();
         console.log(`Documents fetched from collection ${collectionName} successfully.`);
-        return data.data; 
+        return data.data; // Adjust this return based on the actual structure of your response data
     } catch (error) {
         console.error(`Error fetching documents from collection ${collectionName}:`, error);
         throw error;
     }
 }
-
 
 async function fetchAccessToken() {
     const collectionName = 'tokens'; 
@@ -125,19 +124,4 @@ async function fetchAccessToken() {
     }
 }
 
-async function fetchDocumentsFromCollection(collectionName) {
-    try {
-        const response = await fetch(`${baseUrl}/${collectionName}`, {
-            method: 'GET',
-            headers: headers,
-        });
-        if (!response.ok) throw new Error(`Failed to fetch documents from collection: ${collectionName}`);
-        const data = await response.json();
-        console.log(`Documents fetched from collection ${collectionName} successfully.`);
-        return data.data; // Adjust this return based on the actual structure of your response data
-    } catch (error) {
-        console.error(`Error fetching documents from collection ${collectionName}:`, error);
-        throw error;
-    }
-}
-module.exports = { createCollection, insertDocumentIntoCollection, fetchDocumentsFromCollection, fetchAccessToken, fetchDocumentsFromCollection };
+module.exports = { createCollection, insertDocumentIntoCollection, fetchDocumentsFromCollection, fetchAccessToken };
