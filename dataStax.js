@@ -13,28 +13,30 @@ const headers = {
     'X-Cassandra-Token': process.env.ASTRA_DB_APPLICATION_TOKEN,
 };
 
-async function createCollection(collectionName) {
+async function createCollection(collectionName, options = null) {
+    const body = options ? JSON.stringify({ name: collectionName, ...options }) 
+                         : JSON.stringify({ name: collectionName });
     try {
         const response = await fetch(`${baseUrl}`, {
             method: 'POST',
             headers: headers,
-            body: JSON.stringify({ name: collectionName }),
+            body: body,
         });
 
         if (response.ok) {
             console.log(`Collection ${collectionName} created successfully.`);
         } else if (response.status === 409) {
-            console.log(`Collection ${collectionName} already exists. Proceeding with document insertion.`);
+            console.log(`Collection ${collectionName} already exists.`);
         } else {
             const errorText = await response.text(); 
-            console.error(`Failed to create collection: ${collectionName}, Response: ${errorText}`);
-            throw new Error(`Failed to create collection: ${collectionName}`);
+            throw new Error(`Failed to create collection: ${collectionName}, Error: ${errorText}`);
         }
     } catch (error) {
-        console.error(`Error in createCollection for ${collectionName}:`, error);
+        console.error(`Error creating collection ${collectionName}:`, error);
         throw error;
     }
 }
+
 
 
 
@@ -123,5 +125,19 @@ async function fetchAccessToken() {
     }
 }
 
-
-module.exports = { createCollection, insertDocumentIntoCollection, fetchDocumentsFromCollection, fetchAccessToken };
+async function fetchDocumentsFromCollection(collectionName) {
+    try {
+        const response = await fetch(`${baseUrl}/${collectionName}`, {
+            method: 'GET',
+            headers: headers,
+        });
+        if (!response.ok) throw new Error(`Failed to fetch documents from collection: ${collectionName}`);
+        const data = await response.json();
+        console.log(`Documents fetched from collection ${collectionName} successfully.`);
+        return data.data; // Adjust this return based on the actual structure of your response data
+    } catch (error) {
+        console.error(`Error fetching documents from collection ${collectionName}:`, error);
+        throw error;
+    }
+}
+module.exports = { createCollection, insertDocumentIntoCollection, fetchDocumentsFromCollection, fetchAccessToken, fetchDocumentsFromCollection };

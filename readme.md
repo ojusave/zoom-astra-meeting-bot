@@ -1,28 +1,24 @@
-# Zoom Email Integration with AstraDB
+# Zoom Email Integration with AstraDB and Email Content Vectorization
 
-The code in this repository enables the integration of Zoom email functionality with AstraDB. Zoom is a popular video conferencing platform that also provides email features. AstraDB is a distributed cloud database built on Apache Cassandra™. By integrating Zoom email functionality with AstraDB, users can fetch and store email data from Zoom into an AstraDB database efficiently and securely.
+This repository contains code that enables the integration of Zoom email functionality with AstraDB, along with the capability to vectorize email content for advanced processing. Zoom is a widely-used video conferencing platform with email features, and AstraDB is a distributed cloud database built on Apache Cassandra™. This integration not only allows for efficient and secure storage of email data from Zoom into AstraDB but also enhances email processing with vectorization.
 
 ### Purpose
 
-The main purpose of this code is to provide a seamless solution for managing email data from Zoom within an AstraDB database. This integration allows users to leverage the scalability, reliability, and performance benefits of AstraDB while utilizing the email features of Zoom.
+The main purpose of this code is to provide a seamless solution for managing and analyzing email data from Zoom within an AstraDB database. With the added functionality of email content vectorization, users can perform advanced operations such as similarity searches, clustering, and more, leveraging the scalability, reliability, and performance benefits of AstraDB.
 
-## Functionality
+## Key Functionalities
 
-The code facilitates the following key functionalities:
-
-- **OAuth Authorization with Zoom**: The code initiates the OAuth flow with Zoom to obtain authorization for accessing email data. It handles the redirection flow, exchanges authorization codes for access tokens, and stores the tokens securely.
-
-- **Email Retrieval from Zoom**: Once authorized, the code fetches email data from Zoom using the obtained access tokens. It interacts with the Zoom API to retrieve email messages and their details.
-
-- **Storage in AstraDB**: The fetched email data is stored in AstraDB collections. The code manages the creation of collections, insertion of email documents, and retrieval of stored emails as needed.
-
-- **API Endpoints**: The code exposes API endpoints to trigger OAuth authorization, fetch emails from Zoom, and retrieve stored emails from AstraDB. These endpoints provide an interface for users or applications to interact with the integration.
+- **OAuth Authorization with Zoom**: Manages OAuth flow with Zoom to authorize access to email data. Handles redirection, code exchanges, and secure storage of tokens.
+- **Email Retrieval and Vectorization**: Fetches email data from Zoom, vectorizes email content using a Python script and the `SentenceTransformer` model, and stores the data along with its vector representation in AstraDB.
+- **AstraDB Storage**: Utilizes AstraDB collections for storing email data and vectors, supporting advanced data operations.
+- **API Endpoints**: Exposes API endpoints for initiating OAuth authorization, fetching and processing emails from Zoom, and storing them in AstraDB with vector data.
 
 ## Installation
 
-1. Clone this repository to your local machine.
-2. Install dependencies by running `npm install`.
-3. Set up your environment variables by creating a `.env` file in the root directory with the following content:
+1. Clone this repository.
+2. Install Node.js dependencies: `npm install`.
+3. Ensure Python (version 3.6 or later) is installed along with the `sentence-transformers` library: `pip install sentence-transformers`.
+4. Configure environment variables in a `.env` file in the root directory:
 
     ```plaintext
     # Zoom OAuth settings
@@ -41,42 +37,74 @@ The code facilitates the following key functionalities:
     ASTRA_DB_APPLICATION_TOKEN=
     ```
 
-4. Run the server using `node server.js`.
+5. Run the server: `node server.js`.
+
+## Obtaining Credentials for Zoom Integration
+
+To create an OAuth app that integrates with Zoom, follow the updated guidelines provided by Zoom for app development. This process is part of the new Zoom app creation build flow, which simplifies the development and integration of third-party applications with Zoom products.
+
+### Prerequisites
+
+Before you begin, ensure that:
+- You have a Zoom account with the necessary permissions to create apps.
+- You are familiar with Zoom's Key Concepts, which are essential for app development on the Zoom platform.
+
+### Steps to Create an OAuth Client App
+
+1. **Log into the Zoom Marketplace**: Access the [Zoom Marketplace](https://marketplace.zoom.us) and sign in with your Zoom account credentials.
+
+2. **Initiate App Creation**:
+   - Navigate to the section for building apps and select to create a general (OAuth) app.
+   - You'll be guided through the process of specifying your app's details, such as name, app type (user-managed or admin-managed), and OAuth redirect URIs.
+   - Curently mail scopes are only available in the user-managed app 
+
+3. **Configure OAuth & Permissions**:
+   - In the OAuth settings, provide your development redirect URI, which is essential for the OAuth flow between your application and Zoom.
+   - Select the necessary Zoom mail scopes (i.e: mail:write mail:read). These scopes define the level of access your app will have to Zoom accounts and data.
+
+4. **Development and Testing**:
+   - Utilize the development credentials provided during the app setup to build and test your application.
+   - Preview your app and conduct internal testing to ensure it functions as expected.
+
+5. **App Review and Publication [Optional]** :
+   - If you intend for your app to be used outside of your zoom account,submit it for review.
+   - After approval, your app will be published to the Zoom App Marketplace, making it available to Zoom users worldwide.
+
+For a detailed guide and additional resources, refer to Zoom's [official documentation](https://developers.zoom.us/docs/build-flow/create-oauth-apps/).
+
+## Obtaining AstraDB Credentials
+
+To obtain your AstraDB credentials for use in your application, log into the AstraDB Console and navigate to the database you wish to connect with. Your ASTRA_DB_ID and ASTRA_DB_REGION are found in the database's details page. For ASTRA_DB_NAMESPACE, these are specific to your database setup. To integrate with AstraDB, you'll need to generate an application token. This token provides access to AstraDB's APIs for your application.
+
+1. **Access Astra Portal**: Sign in to your AstraDB account and navigate to the "Organization Settings".
+2. **Token Management**: Go to "Token Management" within the settings.
+3. **Generate Token**: Select the appropriate role for your application and create a token.
+
+For detailed instructions, visit [AstraDB Documentation](https://docs.datastax.com/en/astra-serverless/docs/astra-faq.html).
+
 
 ## Usage
 
-Once the server is running, you can interact with the following endpoints:
+Interact with the integration through the following endpoints:
 
-- `GET /`: Initiates Zoom OAuth flow. Redirects to Zoom OAuth authorization page.
-- `GET /emails`: Fetches emails from the Zoom mailbox and stores them in the AstraDB database.
-
+- `GET /`: Initiates Zoom OAuth flow for authorization.
+- `GET /emails`: Fetches and vectorizes emails from Zoom, storing them and their vectors in AstraDB.
 
 ## Components
 
-### `server.js`
-
-This file initializes the Express server and defines routes for handling OAuth redirection, email requests from AstraDB.
-
-### `auth.js`
-
-Handles the Zoom OAuth flow, obtains access tokens, and stores them in the AstraDB collection.
-
-### `emailapi.js`
-
-Fetches emails from the Zoom API and stores them in the AstraDB collection.
-
-### `dataStax.js`
-
-Contains functions for interacting with AstraDB, including creating collections, inserting documents, and fetching data.
-
+- `server.js`: Sets up the Express server, API endpoints, and integrates other components.
+- `auth.js`: Handles the Zoom OAuth authorization flow.
+- `emailAPI.js`: Manages email fetching, content vectorization, and storage in AstraDB.
+- `dataStax.js`: Functions for AstraDB interactions, such as creating collections and inserting documents.
+- `vector_conversion.py`: Python script for converting email content into vectors.
 
 ## Dependencies
 
-- `express`: Web framework for Node.js
-- `body-parser`: Middleware to parse JSON bodies
-- `axios`: Promise-based HTTP client for the browser and Node.js
-- `dotenv`: Loads environment variables from a `.env` file
-- `node-fetch`: A light-weight module that brings `window.fetch` to Node.js
+Node.js:
+- `express`, `body-parser`, `axios`, `dotenv`, `node-fetch` for server setup and API interactions.
+- Ensure `child_process` module is available for executing Python scripts (built-in with Node.js).
 
+Python:
+- `sentence-transformers` for email content vectorization.
 
-
+This integration facilitates advanced email data management and analysis by combining the strengths of Zoom, AstraDB, and modern vectorization techniques.
