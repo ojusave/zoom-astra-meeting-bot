@@ -65,7 +65,5 @@ Stores environment variables including Zoom OAuth settings, mailbox details, and
 - `dotenv`: Loads environment variables from a `.env` file
 - `node-fetch`: A light-weight module that brings `window.fetch` to Node.js
 
-## License
-
 
 
