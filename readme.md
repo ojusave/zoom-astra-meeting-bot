@@ -67,5 +67,5 @@ Stores environment variables including Zoom OAuth settings, mailbox details, and
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
 
