@@ -78,16 +78,6 @@ node server.js
 
 This will start the process of fetching data from the Zoom API, processing it, and saving it to local files.
 
-## Key Features
-
-1. **OAuth 2.0 Authentication**: Securely authenticates with the Zoom API using the account credentials grant type.
-2. **User Data Fetching**: Retrieves information about Zoom users in the account.
-3. **Recording Data Retrieval**: Fetches recording data for each user over the past 6 months.
-4. **Meeting Summary Fetching**: Retrieves meeting summaries for each recording when available.
-5. **Transcript Download**: Downloads and processes VTT transcript files for recordings.
-6. **Data Processing**: Cleans and structures the fetched data for easier analysis.
-7. **File Storage**: Saves processed data to local text files.
-8. **Date Range Handling**: Splits API requests into 30-day chunks to handle Zoom's date range limitations.
 
 ## API Endpoints Used
 
