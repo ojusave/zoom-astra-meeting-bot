@@ -12,7 +12,7 @@ This project is a Node.js application designed to fetch and process data from th
 - [API Endpoints Used](#api-endpoints-used)
 - [Error Handling](#error-handling)
 - [Contributing](#contributing)
-- [License](#license)
+
 
 ## Project Structure
 
