@@ -37,13 +37,13 @@ This project is a Node.js application designed to fetch and process data from th
   - `fileutils.js`: Functions for file operations (downloading, writing).
 - `zoomapi.js`: Core logic for fetching and processing Zoom data.
 
-## Setup
+Setup
 
 1. Clone the repository:
-   ```
-   git clone https://github.com/ojusave/zmail_astradb
-   cd zoom-data-fetcher
-   ```
+    ```
+    git clone https://github.com/ojusave/zmail_astradb.git
+    cd zmail_astradb
+    ```
 
 2. Install dependencies:
    ```
@@ -91,7 +91,7 @@ The application includes error handling for API calls, file operations, and data
 
 ## Contributing
 
-Contributions to this project are welcome. Please follow these steps:
+Please follow these steps:
 
 1. Fork the repository
 2. Create a new branch (`git checkout -b feature/your-feature`)
