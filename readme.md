@@ -1,4 +1,4 @@
-# Zoom Data Fetcher
+# Zoom / Astradb Sample App
 
 This project is a Node.js application designed to fetch and process data from the Zoom API, including user information, meeting recordings, and meeting summaries. It stores the processed data in local files and can optionally push the data to an external endpoint.
 
