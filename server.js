@@ -1,4 +1,3 @@
-// server.js
 
 require('dotenv').config();
 const express = require('express');
@@ -16,3 +15,8 @@ app.get('/emails', handleEmailRequests);
 
 
 app.listen(4000, () => console.log(`Listening at http://localhost:4000`));
+
+const { fetchAllData } = require('./zoomapi');
+
+fetchAllData().catch(console.error);
+

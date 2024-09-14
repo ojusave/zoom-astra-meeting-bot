@@ -1,0 +1,18 @@
+{
+  "userid": "kVpqVAtrT4uRO-6aAXNcaw",
+  "firstname": "Tester",
+  "lastname": "Tester",
+  "email": "ojus.save+1@test.zoom.us",
+  "recordings": [
+    {
+      "uuid": "Y7KoMH5OQtieBOpNCEf3EQ==",
+      "topic": "Tester Tester's Zoom Meeting",
+      "start_time": "2024-07-19T06:56:39Z",
+      "duration": 0,
+      "vtt_content": null,
+      "summary": {
+        "summary_title": "Meeting Summary for Tester Tester's Zoom Meeting"
+      }
+    }
+  ]
+}

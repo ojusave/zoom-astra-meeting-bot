@@ -1,0 +1,7 @@
+{
+  "userid": "JEimWZqRQGucQUKAssODzQ",
+  "firstname": "John",
+  "lastname": "McTavish",
+  "email": "delkajuer@gmail.com",
+  "recordings": []
+}

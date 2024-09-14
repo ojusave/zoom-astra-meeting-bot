@@ -1,0 +1,7 @@
+{
+  "userid": "vqljnuQDQN6I-BNhzfdKhw",
+  "firstname": "John",
+  "lastname": "Smith",
+  "email": "test+user@zoom.us",
+  "recordings": []
+}
