@@ -1,7 +1,0 @@
-{
-  "userid": "gYhSTB4VR0mLjsFXi1JwTg",
-  "firstname": "Milind Ramchandra",
-  "lastname": "Save",
-  "email": "milindsave58@gmail.com",
-  "recordings": []
-}

@@ -1,7 +1,0 @@
-{
-  "userid": "shfYW8ouTpqD-Ok6AVB5Rw",
-  "firstname": "test",
-  "lastname": "account",
-  "email": "ojus.save+3@test.zoom.us",
-  "recordings": []
-}

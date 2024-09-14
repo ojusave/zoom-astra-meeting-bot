@@ -1,7 +1,0 @@
-{
-  "userid": "Ths8m8MmRP6SLqu6-T_-AQ",
-  "firstname": "Ojus",
-  "lastname": "Save",
-  "email": "ojas931992@gmail.com",
-  "recordings": []
-}
