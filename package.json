@@ -1,0 +1,14 @@
+{
+    "name": "zoom-api-integration",
+    "version": "1.0.0",
+    "description": "A project to integrate with Zoom API and process recordings.",
+    "main": "server.js",
+    "scripts": {
+      "start": "node server.js"
+    },
+    "author": "Ojus Save",
+    "dependencies": {
+      "axios": "^0.21.1",
+      "querystring": "^0.2.0"
+    }
+  }
