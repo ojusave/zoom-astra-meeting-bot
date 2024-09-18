@@ -1,0 +1,10 @@
+# Ignore generated data and node_modules
+data
+node_modules
+
+# Ignore virtual environment
+venv
+
+__pycache__
+.env
+package-lock.json
