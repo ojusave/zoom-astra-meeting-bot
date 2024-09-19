@@ -58,7 +58,7 @@ def get_response(user_input):
     # Get the directory of the current script
     script_dir = os.path.dirname(os.path.abspath(__file__))
     # Construct the full path to the JSON file
-    json_file_path = os.path.join(script_dir, "Zoom_Astra.json")
+    json_file_path = os.path.join(script_dir, "static/Zoom_Astra.json")
 
     result = run_flow_from_json(
         flow=json_file_path,
