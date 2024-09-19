@@ -9,7 +9,7 @@ from colorama import Fore, Style, init  # colorama for pretty output
 from astra_db import create_collection, get_collection
 
 # ASCII art to be logged at the start of the app
-ASCII_ART = """
+ASCII_ART = f"""{Fore.RED}
 ███████╗ ██████╗  ██████╗ ███╗   ███╗    ████████╗ ██████╗ 
 ╚══███╔╝██╔═══██╗██╔═══██╗████╗ ████║    ╚══██╔══╝██╔═══██╗
   ███╔╝ ██║   ██║██║   ██║██╔████╔██║       ██║   ██║   ██║
@@ -23,7 +23,7 @@ ASCII_ART = """
 ██╔══██║╚════██║   ██║   ██╔══██╗██╔══██║                  
 ██║  ██║███████║   ██║   ██║  ██║██║  ██║                  
 ╚═╝  ╚═╝╚══════╝   ╚═╝   ╚═╝  ╚═╝╚═╝  ╚═╝    data loader!
-"""
+{Style.RESET_ALL}"""
 print(ASCII_ART)
 
 # Initialize colorama
@@ -34,7 +34,7 @@ data_dir = os.path.join(os.path.dirname(__file__), '../data')
 
 # Define embedding model dimension and chunk size
 # Combined them in a single variable to ensure our chunk
-# size is the same as the embedding model dimension
+# size is the same as the embedding model dimensions
 EMBEDDING_AND_CHUNK_SIZE = 1024
 ASTRA_COLLECTION_NAME = "user_logs"
 
@@ -43,6 +43,7 @@ create_collection(ASTRA_COLLECTION_NAME, EMBEDDING_AND_CHUNK_SIZE)
 
 # Get the collection from Astra DB
 collection = get_collection(ASTRA_COLLECTION_NAME)
+
 
 # Function to load JSON and map to the User class
 def load_user_from_json(json_file):
@@ -62,6 +63,7 @@ def load_user_from_json(json_file):
         user_obj = User(**data)
         return user_obj
 
+
 # Define a simple class to wrap the text content
 class Document:
     """
@@ -74,6 +76,7 @@ class Document:
     def __init__(self, page_content, metadata=None):
         self.page_content = page_content
         self.metadata = metadata if metadata is not None else {}
+
 
 # Iterate over all files in the data directory,
 # look for any recordings, chunk the data,
