@@ -8,6 +8,24 @@ from tqdm import tqdm  # tqdm for progress bar
 from colorama import Fore, Style, init  # colorama for pretty output
 from astra_db import create_collection, get_collection
 
+# ASCII art to be logged at the start of the app
+ASCII_ART = """
+███████╗ ██████╗  ██████╗ ███╗   ███╗    ████████╗ ██████╗ 
+╚══███╔╝██╔═══██╗██╔═══██╗████╗ ████║    ╚══██╔══╝██╔═══██╗
+  ███╔╝ ██║   ██║██║   ██║██╔████╔██║       ██║   ██║   ██║
+ ███╔╝  ██║   ██║██║   ██║██║╚██╔╝██║       ██║   ██║   ██║
+███████╗╚██████╔╝╚██████╔╝██║ ╚═╝ ██║       ██║   ╚██████╔╝
+╚══════╝ ╚═════╝  ╚═════╝ ╚═╝     ╚═╝       ╚═╝    ╚═════╝ 
+                                                           
+ █████╗ ███████╗████████╗██████╗  █████╗                   
+██╔══██╗██╔════╝╚══██╔══╝██╔══██╗██╔══██╗                  
+███████║███████╗   ██║   ██████╔╝███████║                  
+██╔══██║╚════██║   ██║   ██╔══██╗██╔══██║                  
+██║  ██║███████║   ██║   ██║  ██║██║  ██║                  
+╚═╝  ╚═╝╚══════╝   ╚═╝   ╚═╝  ╚═╝╚═╝  ╚═╝    data loader!
+"""
+print(ASCII_ART)
+
 # Initialize colorama
 init(autoreset=True)
 
@@ -58,7 +76,7 @@ class Document:
         self.metadata = metadata if metadata is not None else {}
 
 # Iterate over all files in the data directory,
-# look for any recordings, chunk the data, 
+# look for any recordings, chunk the data,
 # and insert it into the collection
 for filename in os.listdir(data_dir):
     if filename.endswith('.json'):
@@ -85,6 +103,7 @@ for filename in os.listdir(data_dir):
                         chunk_overlap=128
                     )
                     # Wrap the vtt_content in a Document object
+                    # to conform to the LangChain text splitter spec
                     document = Document(recording.vtt_content)
                     chunked_vtt_content = text_splitter.split_documents([document])
                     print(
@@ -96,7 +115,7 @@ for filename in os.listdir(data_dir):
                     # Initialize the progress bar
                     with tqdm(
                         total=len(chunked_vtt_content),
-                        desc=f"Inserting chunks"
+                        desc="Inserting chunks"
                     ) as pbar:
                         for index, chunk in enumerate(chunked_vtt_content):
                             # Insert the user data into the collection
@@ -120,6 +139,10 @@ for filename in os.listdir(data_dir):
                                 # Update the progress bar
                                 pbar.update(1)
                             except Exception as e:
-                                print(f"{Fore.RED}Iteration {index}: Error inserting data for {recording.uuid}: {e}{Style.RESET_ALL}")
+                                print(
+                                    f"{Fore.RED}"
+                                    f"Iteration {index}: Error inserting data for {recording.uuid}: {e}"
+                                    f"{Style.RESET_ALL}"
+                                )
         else:
             print(f"{Fore.RED}No recordings found.{Style.RESET_ALL}")
