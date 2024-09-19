@@ -5,6 +5,7 @@ from astrapy import DataAPIClient
 from dotenv import load_dotenv
 from zoom_user import User
 from langchain_text_splitters import RecursiveCharacterTextSplitter
+from tqdm import tqdm  # tqdm for progress bar
 
 # Load environment variables from .env file
 load_dotenv()
@@ -36,13 +37,12 @@ for filename in os.listdir(data_dir):
     if filename.endswith('.json'):
         file_path = os.path.join(data_dir, filename)
         user = load_user_from_json(file_path)
-        print(f"\n\n\nUser data from {filename}:")
+        print(f"\n\nUser data from {filename}:")
         if user.recordings:
-            print(user.recordings)
             print("Recordings found, chunking data...")
             for recording in user.recordings:
                 if recording.vtt_content:
-                    print(f"Recording {recording} has {len(recording.vtt_content)} characters.")
+                    print(f"\nRecording has {len(recording.vtt_content)} characters.")
                     # Chunk the vtt_content into 1KB chunks
                     text_splitter = RecursiveCharacterTextSplitter(
                         chunk_size=1024,
@@ -53,27 +53,30 @@ for filename in os.listdir(data_dir):
                     chunked_vtt_content = text_splitter.split_documents([document])
                     print(f"Recording {recording.uuid} has {len(chunked_vtt_content)} chunks.")
 
-                    for index, chunk in enumerate(chunked_vtt_content):
-                        # Insert the user data into the collection
-                        try:
-                            collection.update_one(
-                                {'_id': recording.uuid + str(index)},
-                                {'$set': {
-                                    'userid': user.userid, 
-                                    'firstname': user.firstname,
-                                    'lastname': user.lastname,
-                                    'email': user.email,
-                                    'topic': recording.topic,
-                                    'start_time': recording.start_time,
-                                    'duration': recording.duration,
-                                    '$vectorize': chunk.page_content, 
-                                    'content': chunk.page_content, 
-                                    'metadata': { 'ingested': datetime.datetime.now() }
-                                }},
-                                upsert=True
-                            )
-                            print(f"Iteration {index}: Successfully inserted data for {recording.uuid}")
-                        except Exception as e:
-                            print(f"Iteration {index}: Error inserting data for {recording.uuid}: {e}")
+                    # Initialize the progress bar
+                    with tqdm(total=len(chunked_vtt_content), desc=f"Inserting chunks for {recording.uuid}") as pbar:
+                        for index, chunk in enumerate(chunked_vtt_content):
+                            # Insert the user data into the collection
+                            try:
+                                collection.update_one(
+                                    {'_id': recording.uuid + str(index)},
+                                    {'$set': {
+                                        'userid': user.userid, 
+                                        'firstname': user.firstname,
+                                        'lastname': user.lastname,
+                                        'email': user.email,
+                                        'topic': recording.topic,
+                                        'start_time': recording.start_time,
+                                        'duration': recording.duration,
+                                        '$vectorize': chunk.page_content, 
+                                        'content': chunk.page_content, 
+                                        'metadata': { 'ingested': datetime.datetime.now() }
+                                    }},
+                                    upsert=True
+                                )
+                                # Update the progress bar
+                                pbar.update(1)
+                            except Exception as e:
+                                print(f"Iteration {index}: Error inserting data for {recording.uuid}: {e}")
         else:
             print("No recordings found.")
