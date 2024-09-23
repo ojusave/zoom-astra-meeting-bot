@@ -1,6 +1,7 @@
 import os
 import warnings
 import logging
+import uuid
 from langflow.load import run_flow_from_json
 from colorama import Fore, Style, init  # Import colorama for colored output
 
@@ -30,18 +31,34 @@ warnings.filterwarnings("ignore", category=UserWarning, module="langchain_astrad
 warnings.filterwarnings("ignore", category=Warning, module="langflow.schema.message")
 logging.getLogger("langfuse").setLevel(logging.ERROR)
 
+CHAT_SESSION_ID = uuid.uuid4()
+
 # Define the TWEAKS dictionary
 TWEAKS = {
-    "ChatInput-mmwhX": {},
+    "ChatInput-mmwhX": {
+        "session_id": CHAT_SESSION_ID,
+    },
     "ParseData-GmsuE": {},
     "Prompt-xRexO": {},
-    "ChatOutput-E1T42": {},
+    "ChatOutput-E1T42": {
+        "session_id": CHAT_SESSION_ID,
+    },
     "OpenAIModel-9HuFT": {
         "stream": False,
     },
     "AstraVectorize-QmWsS": {},
     "AstraDB-kAZ20": {
         "number_of_results": 10,
+    },
+    "AstraDBChatMemory-ID3YR": {
+        "session_id": CHAT_SESSION_ID,
+    },
+    "Memory-VD7Lm": {
+        "n_messages": 10,
+        "session_id": CHAT_SESSION_ID,
+    },
+    "StoreMessage-n9PGX": {
+        "session_id": CHAT_SESSION_ID,
     },
 }
 

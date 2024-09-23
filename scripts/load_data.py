@@ -4,6 +4,7 @@ import os
 import json
 from zoom_user import User # Objects to handle Zoom data
 from langchain_text_splitters import RecursiveCharacterTextSplitter
+from langchain.schema import Document
 from tqdm import tqdm  # tqdm for progress bar
 from colorama import Fore, Style, init  # colorama for pretty output
 from astra_db import create_collection, get_collection
@@ -44,7 +45,6 @@ create_collection(ASTRA_COLLECTION_NAME, EMBEDDING_AND_CHUNK_SIZE)
 # Get the collection from Astra DB
 collection = get_collection(ASTRA_COLLECTION_NAME)
 
-
 # Function to load JSON and map to the User class
 def load_user_from_json(json_file):
     """
@@ -62,20 +62,6 @@ def load_user_from_json(json_file):
         # Create a User object from the loaded JSON data
         user_obj = User(**data)
         return user_obj
-
-
-# Define a simple class to wrap the text content
-class Document:
-    """
-    A class to wrap text content and its metadata.
-
-    Attributes:
-        page_content (str): The text content.
-        metadata (dict): Optional metadata associated with the text content.
-    """
-    def __init__(self, page_content, metadata=None):
-        self.page_content = page_content
-        self.metadata = metadata if metadata is not None else {}
 
 
 # Iterate over all files in the data directory,
@@ -100,14 +86,16 @@ for filename in os.listdir(data_dir):
             print(f"{Fore.GREEN}Recordings found, chunking data...{Style.RESET_ALL}")
             for recording in user.recordings:
                 if recording.vtt_content:
+                    # Wrap the vtt_content in a Document object
+                    # to conform to the LangChain text splitter spec
+                    document = Document(page_content=recording.vtt_content)
+
                     # Chunk the vtt_content into 1KB chunks
                     text_splitter = RecursiveCharacterTextSplitter(
                         chunk_size=EMBEDDING_AND_CHUNK_SIZE,
                         chunk_overlap=128
                     )
-                    # Wrap the vtt_content in a Document object
-                    # to conform to the LangChain text splitter spec
-                    document = Document(recording.vtt_content)
+
                     chunked_vtt_content = text_splitter.split_documents([document])
                     print(
                         f"Recording {Fore.MAGENTA}{Style.DIM}{recording.uuid}{Style.RESET_ALL} "

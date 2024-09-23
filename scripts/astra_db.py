@@ -51,3 +51,4 @@ def get_collection(collection_name):
         Collection: The retrieved collection object.
     """
     return database.get_collection(collection_name)
+
