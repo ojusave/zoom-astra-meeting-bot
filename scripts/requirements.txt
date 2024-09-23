@@ -1,0 +1,6 @@
+astrapy==1.4.2
+colorama==0.4.6
+langchain==0.2.16
+langchain-text-splitters==0.2.4
+langflow==1.0.18
+python-dotenv==1.0.1
