@@ -96,7 +96,16 @@ async function fetchAllData() {
       return;
     }
 
+    // Limit to first 5 users
+    const maxUsers = 5;
+    let processedUsers = 0;
+
     for (const user of users) {
+      if (processedUsers >= maxUsers) {
+        console.log(`Reached limit of ${maxUsers} users. Stopping processing.`);
+        break;
+      }
+
       const cleanedUser = cleanUserData(user);
       const recordings = await fetchUserRecordings(user.id);
 
@@ -107,9 +116,11 @@ async function fetchAllData() {
 
       await writeDataToFile(userData, `user_${user.id}`);
       console.log(`Processed ${recordings.length} recordings for user ${user.id}`);
+
+      processedUsers++;
     }
 
-    console.log('All data fetched and saved successfully');
+    console.log(`All data fetched and saved successfully for ${processedUsers} users`);
   } catch (error) {
     console.error('Error in fetchAllData:', error);
   }

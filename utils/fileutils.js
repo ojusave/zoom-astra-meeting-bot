@@ -39,7 +39,7 @@ function cleanVttContent(vttContent) {
 
 async function writeDataToFile(data, fileName) {
   const dirPath = path.join(__dirname, '../data');
-  const filePath = path.join(dirPath, `${fileName}.txt`);
+  const filePath = path.join(dirPath, `${fileName}.json`);
 
   try {
     await fs.mkdir(dirPath, { recursive: true });

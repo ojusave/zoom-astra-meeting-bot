@@ -44,6 +44,13 @@ create_collection(ASTRA_COLLECTION_NAME, EMBEDDING_AND_CHUNK_SIZE)
 
 # Get the collection from Astra DB
 collection = get_collection(ASTRA_COLLECTION_NAME)
+def dict_to_string(d):
+    if isinstance(d, str):
+        return d
+    elif isinstance(d, dict):
+        return ", ".join(f"{k}: {v}" for k, v in d.items())
+    else:
+        return str(d)
 
 # Function to load JSON and map to the User class
 def load_user_from_json(json_file):
@@ -85,10 +92,19 @@ for filename in os.listdir(data_dir):
         if user.recordings:
             print(f"{Fore.GREEN}Recordings found, chunking data...{Style.RESET_ALL}")
             for recording in user.recordings:
-                if recording.vtt_content:
-                    # Wrap the vtt_content in a Document object
-                    # to conform to the LangChain text splitter spec
-                    document = Document(page_content=recording.vtt_content)
+                if recording.summary:
+                    summary_text = f"Title: {recording.summary.summary_title}\n"
+                    summary_text += f"Overview: {recording.summary.summary_overview}\n"
+                    
+                    if recording.summary.summary_details:
+                        details_text = "; ".join(dict_to_string(detail) for detail in recording.summary.summary_details)
+                        summary_text += f"Details: {details_text}\n"
+                    
+                    if recording.summary.next_steps:
+                         next_steps_text = "; ".join(dict_to_string(step) for step in recording.summary.next_steps)
+                         summary_text += f"Next Steps: {next_steps_text}"
+
+                    document = Document(page_content=summary_text)
 
                     # Chunk the vtt_content into 1KB chunks
                     text_splitter = RecursiveCharacterTextSplitter(
@@ -99,7 +115,7 @@ for filename in os.listdir(data_dir):
                     chunked_vtt_content = text_splitter.split_documents([document])
                     print(
                         f"Recording {Fore.MAGENTA}{Style.DIM}{recording.uuid}{Style.RESET_ALL} "
-                        f"has {len(recording.vtt_content)} characters "
+                        f"has {len(summary_text)} characters "
                         f"in {len(chunked_vtt_content)} chunks."
                     )
 
