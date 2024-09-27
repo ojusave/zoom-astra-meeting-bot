@@ -5,8 +5,7 @@ import uuid
 import sys
 from langflow.load import run_flow_from_json
 from colorama import Fore, Style, init
-
-
+from astra_db import ASTRA_DB_APPLICATION_TOKEN
 
 # Initialize colorama
 init(autoreset=True)
@@ -28,12 +27,10 @@ TWEAKS = {
     "ChatOutput-E1T42": {
         "session_id": CHAT_SESSION_ID,
     },
-    "OpenAIModel-9HuFT": {
-        "stream": False,
-    },
     "AstraVectorize-QmWsS": {},
     "AstraDB-kAZ20": {
-        "number_of_results": 10,
+        "number_of_results": 4,
+        "token": ASTRA_DB_APPLICATION_TOKEN,
     },
     "AstraDBChatMemory-ID3YR": {
         "session_id": CHAT_SESSION_ID,
@@ -44,6 +41,12 @@ TWEAKS = {
     },
     "StoreMessage-n9PGX": {
         "session_id": CHAT_SESSION_ID,
+    },
+    "StoreMessage-Vlb7O": {
+        "session_id": CHAT_SESSION_ID,
+    },
+    "OpenAIModel-VgMj3": {
+        "model_name": "gpt-4o-mini",
     },
 }
 
@@ -74,6 +77,8 @@ def get_response(user_input):
     chat_output_message = result[0].outputs[0].messages[0].message
 
     return chat_output_message
+
+
 def main():
     if len(sys.argv) > 1:
         # If a query is provided as a command-line argument, process it and print the response
