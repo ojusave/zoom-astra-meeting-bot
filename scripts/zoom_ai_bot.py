@@ -2,26 +2,11 @@ import os
 import warnings
 import logging
 import uuid
+import sys
 from langflow.load import run_flow_from_json
-from colorama import Fore, Style, init  # Import colorama for colored output
+from colorama import Fore, Style, init
 
-# ASCII art to be logged at the start of the app
-ASCII_ART = f"""{Fore.RED}
-███████╗ ██████╗  ██████╗ ███╗   ███╗     █████╗ ██╗
-╚══███╔╝██╔═══██╗██╔═══██╗████╗ ████║    ██╔══██╗██║
-  ███╔╝ ██║   ██║██║   ██║██╔████╔██║    ███████║██║
- ███╔╝  ██║   ██║██║   ██║██║╚██╔╝██║    ██╔══██║██║
-███████╗╚██████╔╝╚██████╔╝██║ ╚═╝ ██║    ██║  ██║██║
-╚══════╝ ╚═════╝  ╚═════╝ ╚═╝     ╚═╝    ╚═╝  ╚═╝╚═╝
-                                                    
-██████╗  ██████╗ ████████╗                          
-██╔══██╗██╔═══██╗╚══██╔══╝                          
-██████╔╝██║   ██║   ██║                             
-██╔══██╗██║   ██║   ██║                             
-██████╔╝╚██████╔╝   ██║                             
-╚═════╝  ╚═════╝    ╚═╝  Ask me about your meetings!
-{Style.RESET_ALL}"""
-print(ASCII_ART)
+
 
 # Initialize colorama
 init(autoreset=True)
@@ -89,19 +74,22 @@ def get_response(user_input):
     chat_output_message = result[0].outputs[0].messages[0].message
 
     return chat_output_message
-
 def main():
-    """
-    Main function to handle user input and output.
-    """
-    print("Welcome to the Zoom AI Bot. Type 'exit' to quit.")
-    while True:
-        user_input = input("\nYou: ")
-        if user_input.lower() == 'exit':
-            print("Goodbye!")
-            break
-        response = get_response(user_input)
-        print(f"{Fore.GREEN}Bot: {Fore.CYAN}{response}{Style.RESET_ALL}")
+    if len(sys.argv) > 1:
+        # If a query is provided as a command-line argument, process it and print the response
+        query = ' '.join(sys.argv[1:])
+        response = get_response(query)
+        print(response)
+    else:
+        # If no arguments are provided, run the interactive mode
+        print("Welcome to the Zoom AI Bot. Type 'exit' to quit.")
+        while True:
+            user_input = input("\nYou: ")
+            if user_input.lower() == 'exit':
+                print("Goodbye!")
+                break
+            response = get_response(user_input)
+            print(f"{Fore.GREEN}Bot: {Fore.CYAN}{response}{Style.RESET_ALL}")
 
 if __name__ == "__main__":
     main()

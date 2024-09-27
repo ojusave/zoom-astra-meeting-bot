@@ -97,7 +97,7 @@ async function fetchAllData() {
     }
 
     // Limit to first 5 users
-    const maxUsers = 5;
+    const maxUsers = 1;
     let processedUsers = 0;
 
     for (const user of users) {

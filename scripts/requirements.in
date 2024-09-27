@@ -1,0 +1,4 @@
+Flask
+fastapi
+transformers
+torch

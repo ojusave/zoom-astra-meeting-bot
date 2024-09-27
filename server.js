@@ -1,47 +1,38 @@
+const express = require('express');
+const bodyParser = require('body-parser');
 const { spawn } = require('child_process');
+const path = require('path');
 const { fetchAllData } = require('./zoomapi');
+const { handleBotEvent } = require('./zoom_chatbot');
 
-async function runPythonScript(scriptPath) {
-  return new Promise((resolve, reject) => {
-    const process = spawn('python', [scriptPath]);
+const app = express();
+const port = process.env.PORT || 4000;
 
-    process.stdout.on('data', (data) => {
-      // Print the Python script output directly to maintain formatting
-      process.stdout.write(data);
-    });
+app.use(bodyParser.json());
 
-    process.stderr.on('data', (data) => {
-      console.error(`Python script error: ${data}`);
-    });
+app.use((req, res, next) => {
+  console.log(`${new Date().toISOString()} - ${req.method} ${req.url}`);
+  next();
+});
 
-    process.on('close', (code) => {
-      if (code === 0) {
-        resolve();
-      } else {
-        reject(new Error(`Python script exited with code ${code}`));
-      }
-    });
+app.get('/', (req, res) => {
+  res.send('OK');
+});
 
-    // Pipe Node.js process's stdin to the Python process's stdin
-    process.stdin.pipe(process.stdin);
-  });
-}
+app.post('/anthropic', (req, res) => {
+  console.log('Received POST request to /anthropic');
+  console.log('Request body:', JSON.stringify(req.body, null, 2));
+  handleBotEvent(req, res);
+});
 
-async function main() {
-  try {
-    console.log("Fetching data from Zoom...");
-    await fetchAllData();
+app.listen(port, () => console.log(`Listening at http://localhost:${port}`));
 
-    console.log("\nLoading data into Astra DB...");
-    await runPythonScript('./scripts/load_data.py');
+process.on('uncaughtException', (error) => {
+  console.error('Uncaught Exception:', error);
+  process.exit(1);
+});
 
-    console.log("\nStarting the Zoom AI bot...");
-    await runPythonScript('./scripts/zoom_ai_bot.py');
-
-    console.log("All processes completed successfully.");
-  } catch (error) {
-    console.error("An error occurred:", error);
-  }
-}
-
-main();
+process.on('unhandledRejection', (reason, promise) => {
+  console.error('Unhandled Rejection at:', promise, 'reason:', reason);
+  process.exit(1);
+});
