@@ -4,6 +4,7 @@ const { spawn } = require('child_process');
 const path = require('path');
 const { fetchAllData } = require('./zoomapi');
 const { handleBotEvent } = require('./zoom_chatbot');
+require('dotenv').config();
 
 const app = express();
 const port = process.env.PORT || 4000;
@@ -36,3 +37,4 @@ process.on('unhandledRejection', (reason, promise) => {
   console.error('Unhandled Rejection at:', promise, 'reason:', reason);
   process.exit(1);
 });
+

@@ -1,12 +1,12 @@
+require('dotenv').config();
 const axios = require('axios');
-const config = require('../config');
 const { getToken } = require('../auth');
 
 async function makeApiCall(endpoint, params = {}) {
   try {
     const token = await getToken();
-    console.log(`Making API call to: ${config.zoomApiBaseUrl}${endpoint} with params:`, params);
-    const response = await axios.get(`${config.zoomApiBaseUrl}${endpoint}`, {
+    console.log(`Making API call to: ${process.env.zoomApiBaseUrl}${endpoint} with params:`, params);
+    const response = await axios.get(`${process.env.zoomApiBaseUrl}${endpoint}`, {
       headers: { 'Authorization': `Bearer ${token}` },
       params: params
     });
@@ -19,7 +19,7 @@ async function makeApiCall(endpoint, params = {}) {
 
 async function pushDataToEndpoint(data) {
   try {
-    const response = await axios.post(config.endpointUrl, data);
+    const response = await axios.post(process.env.endpointUrl, data);
     console.log('Data successfully pushed to endpoint:', response.status);
   } catch (error) {
     console.error('Error pushing data to endpoint:', error.response ? error.response.data : error.message);

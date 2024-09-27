@@ -1,6 +1,7 @@
+require('dotenv').config();
+
 const axios = require('axios');
 const qs = require('querystring');
-const config = require('./config');
 
 let cachedToken = null;
 let tokenExpiration = null;
@@ -11,11 +12,11 @@ async function getToken() {
   }
 
   try {
-    const auth = Buffer.from(`${config.clientId}:${config.clientSecret}`).toString('base64');
+    const auth = Buffer.from(`${process.env.OAuth_clientId}:${process.env.oAuth_clientSecret}`).toString('base64');
     const response = await axios.post('https://zoom.us/oauth/token',
       qs.stringify({
         grant_type: 'account_credentials',
-        account_id: config.accountId
+        account_id: process.env.accountId
       }), {
         headers: {
           'Authorization': `Basic ${auth}`,
@@ -34,3 +35,5 @@ async function getToken() {
 }
 
 module.exports = { getToken };
+
+
