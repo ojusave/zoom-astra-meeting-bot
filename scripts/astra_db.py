@@ -7,8 +7,12 @@ from dotenv import load_dotenv
 load_dotenv()
 
 # Initialize the DataStax Astra DataAPIClient
-client = astrapy.DataAPIClient(os.environ["ASTRA_DB_APPLICATION_TOKEN"])
-database = client.get_database(os.environ["ASTRA_DB_API_ENDPOINT"])
+GROQ_API_KEY=os.environ["GROQ_API_KEY"]
+ASTRA_DB_APPLICATION_TOKEN=os.environ["ASTRA_DB_APPLICATION_TOKEN"]
+ASTRA_DB_API_ENDPOINT=os.environ["ASTRA_DB_API_ENDPOINT"]
+
+client = astrapy.DataAPIClient(ASTRA_DB_APPLICATION_TOKEN)
+database = client.get_database(ASTRA_DB_API_ENDPOINT)
 
 def create_collection(collection_name, embedding_and_chunk_size):
     """
