@@ -1,4 +1,4 @@
-# Zoom Astra DB Integration
+# Zoom Astra DB RAG Chatbot
 
 ## Overview
 
