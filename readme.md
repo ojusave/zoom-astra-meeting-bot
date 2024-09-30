@@ -2,6 +2,8 @@
 
 This project is a Node.js application designed to fetch and process data from the Zoom API, including user information, meeting recordings, and meeting summaries. It stores the processed data in local files and can optionally push the data to an external endpoint.
 
+Also checkout the `dev-docs` folder for helpful notes.  A Docs website that is in progress can be found [here](https://zoomastra.dev-docs.dev).
+
 ## Table of Contents
 
 - [Project Structure](#project-structure)
