@@ -33,7 +33,7 @@ def main():
         init(autoreset=True)
 
         # Define the path to the Zoom data directory
-        data_dir = os.path.join(os.path.dirname(__file__), '../data')
+        data_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'data'))
 
         # Define embedding model dimension and chunk size
         EMBEDDING_AND_CHUNK_SIZE = 1024

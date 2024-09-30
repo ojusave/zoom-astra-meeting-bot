@@ -1,9 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-const { spawn } = require('child_process');
+const { handleBotEvent } = require('./zoom/chatbot/sendMessage');
 const path = require('path');
-const { fetchAllData } = require('./zoomapi');
-const { handleBotEvent } = require('./zoom_chatbot');
 require('dotenv').config();
 
 const app = express();
@@ -30,11 +28,14 @@ app.listen(port, () => console.log(`Listening at http://localhost:${port}`));
 
 process.on('uncaughtException', (error) => {
   console.error('Uncaught Exception:', error);
-  process.exit(1);
+  // Instead of exiting, we'll keep the server running
+  // process.exit(1);
 });
 
 process.on('unhandledRejection', (reason, promise) => {
   console.error('Unhandled Rejection at:', promise, 'reason:', reason);
-  process.exit(1);
+  // Instead of exiting, we'll keep the server running
+  // process.exit(1);
 });
 
+console.log('Server started. Waiting for requests...');

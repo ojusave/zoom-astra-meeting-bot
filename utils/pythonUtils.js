@@ -1,19 +1,33 @@
 const { spawnSync, spawn } = require('child_process');
+const path = require('path');
+
+console.log('pythonUtils.js file loaded');
 
 function getPythonCommand() {
-    // Check if 'python3' exists on the system
-    const python3Check = spawnSync('which', ['python3']);
-    if (python3Check.status === 0) {
-        return 'python3'; // If found, use 'python3'
+    const commands = ['python3', 'python', '/usr/local/bin/python3', '/usr/bin/python3'];
+    for (const cmd of commands) {
+        try {
+            const result = spawnSync(cmd, ['-c', 'print("Python found")']);
+            if (result.status === 0) {
+                console.log(`Using Python at: ${cmd}`);
+                return cmd;
+            }
+        } catch (error) {
+            console.log(`Failed to execute ${cmd}: ${error.message}`);
+        }
     }
-    return 'python'; // Otherwise, default to 'python'
+    throw new Error('Python executable not found. Please ensure Python is installed and added to your PATH.');
 }
 
 function runPythonScript(scriptPath, ...args) {
     return new Promise((resolve, reject) => {
-        const pythonCmd = getPythonCommand(); // Get appropriate Python command
+        const pythonCmd = getPythonCommand();
+        console.log(`Executing: ${pythonCmd} ${scriptPath} ${args.join(' ')}`);
+        console.log(`Current working directory: ${process.cwd()}`);
+        console.log(`Script path: ${path.resolve(scriptPath)}`);
+
         const pythonProcess = spawn(pythonCmd, [scriptPath, ...args]);
-        
+
         let output = '';
         let errorOutput = '';
 
@@ -31,11 +45,16 @@ function runPythonScript(scriptPath, ...args) {
             console.log(`Python script exited with code ${code}`);
             if (code !== 0) {
                 console.error(`Error output: ${errorOutput}`);
-                reject(`An error occurred while processing your request. Error code: ${code}`);
+                reject(`An error occurred while processing your request. Error code: ${code}. Error output: ${errorOutput}`);
             } else {
                 console.log(`Python script output: ${output.trim()}`);
                 resolve(output.trim());
             }
+        });
+
+        pythonProcess.on('error', (error) => {
+            console.error(`Failed to start Python process: ${error.message}`);
+            reject(`Failed to start Python process: ${error.message}`);
         });
     });
 }
