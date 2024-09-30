@@ -1,4 +1,4 @@
-# Zoom Astra DB RAG Chatbot
+# Zoom AstraDB RAG Chatbot
 
 ## Overview
 
