@@ -114,7 +114,7 @@ def main():
                                                 'topic': recording.topic,
                                                 'start_time': recording.start_time,
                                                 'duration': recording.duration,
-                                                '$vectorize': chunk.page_content, 
+                                                '$vectorize': chunk.page_content, #this will generate the vector embeddings for the chunk
                                                 'content': chunk.page_content, 
                                                 'metadata': {'ingested': datetime.datetime.now()}
                                             }},

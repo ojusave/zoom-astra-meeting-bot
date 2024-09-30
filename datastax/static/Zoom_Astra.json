@@ -1279,7 +1279,7 @@
                                 "placeholder": "",
                                 "show": true,
                                 "name": "api_endpoint",
-                                "value": "https://aea28233-c465-416d-b5c0-d1f345d290eb-us-east-2.apps.astra.datastax.com",
+                                "value": "https://302aa856-e512-49c7-b586-f91130e0fdf1-us-east-2.apps.astra.datastax.com",
                                 "display_name": "API Endpoint",
                                 "advanced": false,
                                 "input_types": [
@@ -1733,7 +1733,7 @@
                                 "placeholder": "",
                                 "show": true,
                                 "name": "api_endpoint",
-                                "value": "https://aea28233-c465-416d-b5c0-d1f345d290eb-us-east-2.apps.astra.datastax.com",
+                                "value": "https://302aa856-e512-49c7-b586-f91130e0fdf1-us-east-2.apps.astra.datastax.com",
                                 "display_name": "API Endpoint",
                                 "advanced": false,
                                 "input_types": [

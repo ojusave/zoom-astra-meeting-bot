@@ -5,7 +5,7 @@ import uuid
 import sys
 from langflow.load import run_flow_from_json
 from colorama import Fore, Style, init
-from astra_db import ASTRA_DB_APPLICATION_TOKEN
+from astra_db import ASTRA_DB_APPLICATION_TOKEN , ASTRA_DB_API_ENDPOINT
 
 # Initialize colorama
 init(autoreset=True)
@@ -31,6 +31,7 @@ TWEAKS = {
     "AstraDB-kAZ20": {
         "number_of_results": 4,
         "token": ASTRA_DB_APPLICATION_TOKEN,
+        "api_endpoint": ASTRA_DB_API_ENDPOINT,
     },
     "AstraDBChatMemory-ID3YR": {
         "session_id": CHAT_SESSION_ID,
