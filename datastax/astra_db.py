@@ -7,7 +7,7 @@ from dotenv import load_dotenv
 load_dotenv()
 
 # Initialize the DataStax Astra DataAPIClient
-GROQ_API_KEY=os.environ["GROQ_API_KEY"]
+#GROQ_API_KEY=os.environ["GROQ_API_KEY"]
 ASTRA_DB_APPLICATION_TOKEN=os.environ["ASTRA_DB_APPLICATION_TOKEN"]
 ASTRA_DB_API_ENDPOINT=os.environ["ASTRA_DB_API_ENDPOINT"]
 
