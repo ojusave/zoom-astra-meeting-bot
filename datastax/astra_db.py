@@ -7,9 +7,14 @@ from dotenv import load_dotenv
 load_dotenv()
 
 # Initialize the DataStax Astra DataAPIClient
-GROQ_API_KEY=os.environ["GROQ_API_KEY"]
 ASTRA_DB_APPLICATION_TOKEN=os.environ["ASTRA_DB_APPLICATION_TOKEN"]
 ASTRA_DB_API_ENDPOINT=os.environ["ASTRA_DB_API_ENDPOINT"]
+
+# Initialize the Langflow API
+LANGFLOW_BASE_API_URL=os.environ["LANGFLOW_BASE_API_URL"]
+LANGFLOW_FLOW_ENDPOINT=os.environ["LANGFLOW_FLOW_ENDPOINT"]
+LANGFLOW_FLOW_ID=os.environ["LANGFLOW_FLOW_ID"]
+LANGFLOW_APPLICATION_TOKEN=os.environ["LANGFLOW_APPLICATION_TOKEN"]
 
 client = astrapy.DataAPIClient(ASTRA_DB_APPLICATION_TOKEN)
 database = client.get_database(ASTRA_DB_API_ENDPOINT)
