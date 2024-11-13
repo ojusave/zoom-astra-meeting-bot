@@ -230,8 +230,8 @@ langchain-text-splitters==0.2.4
 langchain-unstructured==0.1.2
 langchainhub==0.1.21
 langdetect==1.0.9
-langflow==1.0.18
-langflow-base==0.0.96
+langflow==1.0.19
+langflow-base==0.0.97
 langfuse==2.51.1
 langsmith==0.1.121
 langwatch==0.1.26
