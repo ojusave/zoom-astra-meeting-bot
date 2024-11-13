@@ -2,7 +2,12 @@
 
 ## Overview
 
+
+
+## Table of Contents
+=======
 This project integrates [Zoom's API](https://developers.zoom.us/docs/api/) with [Astra DB](https://www.datastax.com/products/datastax-astra) to create a chatbot that can fetch, process, and store Zoom meeting data, and respond to user queries about this data. The bot uses [OpenAI's language models](https://platform.openai.com/docs/models) for natural language processing and understanding.
+
 
 ## What We're Trying to Achieve
 
