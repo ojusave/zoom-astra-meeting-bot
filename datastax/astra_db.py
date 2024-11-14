@@ -7,14 +7,36 @@ from dotenv import load_dotenv
 load_dotenv()
 
 # Initialize the DataStax Astra DataAPIClient
-ASTRA_DB_APPLICATION_TOKEN=os.environ["ASTRA_DB_APPLICATION_TOKEN"]
-ASTRA_DB_API_ENDPOINT=os.environ["ASTRA_DB_API_ENDPOINT"]
+# For DataStax Astra, both the token and endpoint are required to connect to the database
+ASTRA_DB_APPLICATION_TOKEN = os.environ.get("ASTRA_DB_APPLICATION_TOKEN")
+if not ASTRA_DB_APPLICATION_TOKEN:
+    raise EnvironmentError(
+        "Please ensure that the environment variable 'ASTRA_DB_APPLICATION_TOKEN' is set."
+    )
 
-# Initialize the Langflow API
-LANGFLOW_BASE_API_URL=os.environ["LANGFLOW_BASE_API_URL"]
-LANGFLOW_FLOW_ENDPOINT=os.environ["LANGFLOW_FLOW_ENDPOINT"]
-LANGFLOW_FLOW_ID=os.environ["LANGFLOW_FLOW_ID"]
-LANGFLOW_APPLICATION_TOKEN=os.environ["LANGFLOW_APPLICATION_TOKEN"]
+ASTRA_DB_API_ENDPOINT = os.environ.get("ASTRA_DB_API_ENDPOINT")
+if not ASTRA_DB_API_ENDPOINT:
+    raise EnvironmentError(
+        "Please ensure that the environment variable 'ASTRA_DB_API_ENDPOINT' is set."
+    )
+
+# For Langflow, the base API URL is required,
+# but the flow ID, endpoint, and token are optional
+# depending on if you're using DataStax Langflow or a local OSS version
+LANGFLOW_BASE_API_URL = os.environ.get("LANGFLOW_BASE_API_URL")
+if not LANGFLOW_BASE_API_URL:
+    raise EnvironmentError(
+        "Please ensure that the environment variable 'LANGFLOW_BASE_API_URL' is set."
+    )
+
+LANGFLOW_ID=os.environ.get("LANGFLOW_ID", None)
+
+# You can use either an endpoint value or a flow ID to reference a flow.
+LANGFLOW_FLOW_ENDPOINT=os.environ.get("LANGFLOW_FLOW_ENDPOINT", None)
+LANGFLOW_FLOW_ID=os.environ.get("LANGFLOW_FLOW_ID", None)
+
+# DataStax Langflow requires an application token to run flows, local OSS versions do not
+LANGFLOW_APPLICATION_TOKEN=os.environ.get("LANGFLOW_APPLICATION_TOKEN", None)
 
 client = astrapy.DataAPIClient(ASTRA_DB_APPLICATION_TOKEN)
 database = client.get_database(ASTRA_DB_API_ENDPOINT)
