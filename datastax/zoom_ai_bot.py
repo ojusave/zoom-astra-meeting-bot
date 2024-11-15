@@ -12,6 +12,7 @@ from astra_db import (
     LANGFLOW_BASE_API_URL,
     LANGFLOW_FLOW_ENDPOINT,
     LANGFLOW_FLOW_ID,
+    LANGFLOW_ID,
     LANGFLOW_APPLICATION_TOKEN,
 )
 
@@ -62,10 +63,14 @@ def run_flow(message: str,
     :param tweaks: Optional tweaks to customize the flow
     :return: The JSON response from the flow
     """
-    if LANGFLOW_FLOW_ID:
-        api_url = f"{LANGFLOW_BASE_API_URL}/lf/{LANGFLOW_FLOW_ID}/api/v1/run/{endpoint}"
+    if LANGFLOW_ID:
+        # This implies DataStax Langflow is being used
+        api_url = f"{LANGFLOW_BASE_API_URL}/lf/{LANGFLOW_ID}/api/v1/run/{endpoint}"
     else:
-        api_url = f"{LANGFLOW_BASE_API_URL}/api/v1/run"
+        # This implies a local OSS version or a service like Render is being used
+        api_url = f"{LANGFLOW_BASE_API_URL}/api/v1/run/{endpoint}"
+
+    #print(f"API URL: {api_url}")
 
     payload = {
         "input_value": message,
@@ -121,9 +126,10 @@ def get_response_from_api(user_input, session_id=CHAT_SESSION_ID):
     Returns:
         str: The response from the flow.
     """
+    endpoint = LANGFLOW_FLOW_ENDPOINT or LANGFLOW_FLOW_ID
     result = run_flow(
         message=user_input,
-        endpoint=LANGFLOW_FLOW_ENDPOINT,
+        endpoint=endpoint,
         tweaks=TWEAKS,
         session_id=session_id,
         application_token=LANGFLOW_APPLICATION_TOKEN,
