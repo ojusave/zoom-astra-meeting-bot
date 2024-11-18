@@ -1,15 +1,11 @@
-# Zoom AstraDB RAG Chatbot
+# Zoom AstraDB RAG Chatbot 🤖🧠💬
+A smart chatbot leveraging RAG (Retrieval-Augmented Generation) to update LLM context in real-time for Zoom meeting transcripts and summaries, powered by DataStax's AI Platform.
 
 ## Overview
-
-
-
-## Table of Contents
-
 This project integrates [Zoom's API](https://developers.zoom.us/docs/api/) with [Astra DB](https://www.datastax.com/products/datastax-astra) to create a chatbot that can fetch, process, and store Zoom meeting data, and respond to user queries about this data. The bot uses [OpenAI's language models](https://platform.openai.com/docs/models) for natural language processing and understanding.
 
 
-## What We're Trying to Achieve
+## 🎯 What We're Trying to Achieve
 
 The main goals of this project are:
 
@@ -18,7 +14,7 @@ The main goals of this project are:
 3. Provide a chatbot interface in Zoom Team Chat for users to query this data.
 4. Use AI to interpret user queries and generate relevant responses based on the stored data.
 
-## File Structure and Functionality
+## 📁 File Structure and Functionality
 
 ### server.js
 
@@ -68,13 +64,12 @@ Contains the AI logic for processing user queries and generating responses based
 
 Provides utility functions for running Python scripts from Node.js, which is crucial for integrating the Python-based AI and database operations with the Node.js server.
 
-## Environment Variables (.env)
+## ⚙️ Environment Variables (.env)
 
 The .env file contains crucial configuration and credentials. Here's what each variable represents:
 
 - `ASTRA_DB_*`: Credentials and endpoints for your Astra DB instance
-- `OPENAI_API_KEY`: API key for OpenAI services
-- `GROQ_API_KEY`: API key for Groq (if used)
+- `LANGFLOW_*`: Credentials and endpoints for your DataStax Langflow instance
 - `ZOOM_CLIENT_ID` and `ZOOM_CLIENT_SECRET`: Credentials for Zoom OAuth app
 - `ZOOM_BOT_JID`: Jabber ID for your Zoom chatbot
 - `ZOOM_ACCOUNT_ID`: Your Zoom account ID
@@ -83,7 +78,7 @@ The .env file contains crucial configuration and credentials. Here's what each v
 
 Take a look at the provided [.env.example](./.env.example) for reference.
 
-## Setting Up Credentials
+## 🔑 Setting Up Credentials
 
 ### Zoom Teams Chatbot Configuration
 
@@ -108,12 +103,53 @@ Take a look at the provided [.env.example](./.env.example) for reference.
 
 Obtain an API key from [OpenAI's platform](https://platform.openai.com/).
 
+## 🛠️ Installation
+
+### Prerequisites
+
+1. **Python**: Ensure you have Python 3.7 or later installed. You can download it from [python.org](https://www.python.org/downloads/).
+2. **Node.js**: Ensure you have Node.js installed. You can download it from [nodejs.org](https://nodejs.org/).
+
+### Python Setup
+
+1. **Clone the repository**:
+    ```sh
+    git clone https://github.com/ojusave/zmail_astradb.git
+    cd zmail_astradb
+    ```
+
+2. **Create and activate a virtual environment**:
+    ```sh
+    python3 -m venv venv
+    source venv/bin/activate  # On Windows, use `venv\Scripts\activate`
+    ```
+
+3. **Install the required dependencies**:
+    ```sh
+    pip install -r requirements.txt
+    ```
+
+4. **Create a `.env` file**:
+    - Copy the contents of `.env.example` into a new file named `.env`.
+    - Fill in the required environment variables with your own values.
+
+### Node.js Setup
+
+1. **Install the required dependencies**:
+    ```sh
+    npm install
+    ```
+
+2. **Run the Node.js application**:
+    ```sh
+    node server.js
+    ```
+
 ## Testing the App
 
 1. Ensure all environment variables are correctly set in the .env file.
-2. Run `npm install` to install dependencies.
-3. Start the server with `node server.js`.
-4. Use the Zoom Chat interface to send messages to your bot.
+2. Start the server with `node server.js` as stated above.
+3. Use the Zoom Chat interface to send messages to your bot.
 
 ## Message Flow
 
