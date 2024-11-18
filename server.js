@@ -18,8 +18,8 @@ app.get('/', (req, res) => {
   res.send('OK');
 });
 
-app.post('/anthropic', (req, res) => {
-  console.log('Received POST request to /anthropic');
+app.post('/datastax', (req, res) => {
+  console.log('Received POST request to /datastax');
   console.log('Request body:', JSON.stringify(req.body, null, 2));
   handleBotEvent(req, res);
 });

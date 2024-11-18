@@ -1,19 +1,16 @@
-import os
+""" This script runs a Zoom AI Bot using DataStax Langflow. """
 import warnings
 import logging
 import sys
 from typing import Optional
 import requests
-from langflow.load import run_flow_from_json
 from colorama import Fore, Style, init
 from astra_db import (
-    ASTRA_DB_APPLICATION_TOKEN,
-    ASTRA_DB_API_ENDPOINT,
-    LANGFLOW_BASE_API_URL,
-    LANGFLOW_FLOW_ENDPOINT,
-    LANGFLOW_FLOW_ID,
-    LANGFLOW_ID,
     LANGFLOW_APPLICATION_TOKEN,
+    LANGFLOW_BASE_API_URL,
+    LANGFLOW_ID,
+    LANGFLOW_FLOW_ENDPOINT,
+    LANGFLOW_FLOW_ID
 )
 
 # Initialize colorama
@@ -24,25 +21,11 @@ warnings.filterwarnings("ignore", category=UserWarning, module="langchain_astrad
 warnings.filterwarnings("ignore", category=Warning, module="langflow.schema.message")
 logging.getLogger("langfuse").setLevel(logging.ERROR)
 
-CHAT_SESSION_ID = "local_zoom_ai_bot_user"
-
 # Define the TWEAKS dictionary
 TWEAKS = {
-    "ChatInput-e99Az": {},
-    "ParseData-QAU3e": {},
-    "Prompt-vpRss": {},
-    "ChatOutput-0wraO": {},
-    "AstraDB-Q3sXh": {
-        "number_of_results": 4,
-        "token": ASTRA_DB_APPLICATION_TOKEN,
-        "api_endpoint": ASTRA_DB_API_ENDPOINT,
-    },
-    "AstraDBChatMemory-GUm9k": {},
     "Memory-X9L1q": {
         "n_messages": 10,
     },
-    "StoreMessage-CzDzu": {},
-    "StoreMessage-xw28N": {},
     "OpenAIModel-E70M2": {
         "model_name": "gpt-4o-mini",
     },
@@ -76,7 +59,7 @@ def run_flow(message: str,
         "input_value": message,
         "output_type": output_type,
         "input_type": input_type,
-        #"session_id": session_id
+        "session_id": session_id
     }
     headers = None
     if tweaks:
@@ -87,41 +70,14 @@ def run_flow(message: str,
     return response.json()
 
 
-def get_response(user_input):
+def get_response_from_api(user_input, session_id):
     """
-    Run the flow from the JSON file with the given user input and return the result.
+    Run the flow using the DataStax Langflow API with the given user input and return the result.
+    Use the session_id to track conversations across multiple users.
 
     Args:
         user_input (str): The input message from the user.
-
-    Returns:
-        str: The response from the flow.
-    """
-    # Get the directory of the current script
-    script_dir = os.path.dirname(os.path.abspath(__file__))
-    # Construct the full path to the JSON file
-    json_file_path = os.path.join(script_dir, "static/Zoom_Astra.json")
-
-    result = run_flow_from_json(
-        flow=json_file_path,
-        input_value=user_input,
-        fallback_to_env_vars=True,  # False by default
-        tweaks=TWEAKS,
-        env_file=os.path.join(script_dir, ".env"),
-    )
-
-    # Extract the "Chat Output" message
-    chat_output_message = result[0].outputs[0].messages[0].message
-
-    return chat_output_message
-
-
-def get_response_from_api(user_input, session_id=CHAT_SESSION_ID):
-    """
-    Run the flow from the JSON file with the given user input and return the result.
-
-    Args:
-        user_input (str): The input message from the user.
+        session_id (str): The session ID for the user.
 
     Returns:
         str: The response from the flow.
@@ -142,20 +98,21 @@ def get_response_from_api(user_input, session_id=CHAT_SESSION_ID):
 
 
 def main():
+    """ Run the Zoom AI Bot in interactive mode or with a query from the command line. """
     if len(sys.argv) > 1:
-        # If a query is provided as a command-line argument, process it and print the response
+        # If a query is provided as a command-line argument, assume this is coming from Zoom
         query = ' '.join(sys.argv[1:])
         response = get_response_from_api(query, session_id="ZAstraO_Bot")
         print(response)
     else:
-        # If no arguments are provided, run the interactive mode
+        # If no arguments are provided, run the interactive mode locally
         print("Welcome to the Zoom AI Bot. Type 'exit' to quit.")
         while True:
             user_input = input("\nYou: ")
             if user_input.lower() == 'exit':
                 print("Goodbye!")
                 break
-            response = get_response_from_api(user_input)
+            response = get_response_from_api(user_input, session_id="LocalZoom_Bot")
             print(f"{Fore.GREEN}Bot: {Fore.CYAN}{response}{Style.RESET_ALL}")
 
 if __name__ == "__main__":
