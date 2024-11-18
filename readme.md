@@ -81,6 +81,8 @@ The .env file contains crucial configuration and credentials. Here's what each v
 - `OAuth_Client_ID` and `OAuth_Client_Secret`: Credentials for Zoom server-to-server OAuth app
 - `zoomApiBaseUrl`: Base URL for Zoom API calls
 
+Take a look at the provided [.env.example](./.env.example) for reference.
+
 ## Setting Up Credentials
 
 ### Zoom Teams Chatbot Configuration
@@ -98,7 +100,7 @@ The .env file contains crucial configuration and credentials. Here's what each v
 
 ### Astra DB Setup
 
-1. Create an [Astra DB account](https://astra.datastax.com/) and set up a new database.
+1. Create an [Astra DB account](https://docs.datastax.com/en/astra-db-serverless/index.html) and set up a new database.
 2. Create an application token with the necessary permissions.
 3. Note down the Database ID, Application Token, and API Endpoint.
 
