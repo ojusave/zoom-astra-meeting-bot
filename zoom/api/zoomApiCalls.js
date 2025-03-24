@@ -1,5 +1,6 @@
 const axios = require('axios');
 const { getToken } = require('../authentication/serverToServerAuth');
+require('dotenv').config();
 
 
 
@@ -35,8 +36,16 @@ function getDateRange(months = 6) {
 async function makeApiCall(endpoint, params = {}) {
     try {
       const token = await getToken();
-      console.log(`Making API call to: ${process.env.zoomApiBaseUrl}${endpoint} with params:`, params);
-      const response = await axios.get(`${process.env.zoomApiBaseUrl}${endpoint}`, {
+      // Temporarily hardcode the base URL for testing
+      const baseUrl = 'https://zoom-test-apis.onrender.com';
+      console.log('Environment variables:', {
+        zoomApiBaseUrl: process.env.zoomApiBaseUrl,
+        NODE_ENV: process.env.NODE_ENV,
+        PWD: process.env.PWD
+      });
+      console.log('API Base URL:', baseUrl);
+      console.log(`Making API call to: ${baseUrl}${endpoint} with params:`, params);
+      const response = await axios.get(`${baseUrl}${endpoint}`, {
         headers: { 'Authorization': `Bearer ${token}` },
         params: params
       });
